@@ -1,0 +1,30 @@
+program ::= {importStmt} {messageStmt | enumStmt | serviceStmt}
+
+importStmt ::= 'import' <STRING> ['as' <ID>]
+
+messageStmt ::= 'message' <ID> '{' {memberStmt} '}'
+
+memberStmt ::= <INT> [determiner] type <ID> [extra] [';' | ',']
+
+determiner ::= 'optional' | 'required'
+
+type ::= <ID> | builtinType
+
+builtinType ::= 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 
+                     'bool' | 'f32' | 'f64' | 'string' | complexType
+
+complexType ::= 'Array' '<' type '>' | 'Map' '<' type ',' type '>'
+
+extra ::= '(' kv {',' kv} ')'
+
+kv := <ID> '.' <ID> '=' <STRING>
+
+enumStmt ::= 'enum' <ID> '{' {enumValueStmt} '}'
+
+enumValueStmt ::= <ID> ['=' <INT>] [';' | ',']
+
+serviceStmt ::= 'service' <ID> '{' {methodStmt} '}'
+
+methodStmt ::= returnType <ID> '(' [<ID>] ')' [extra] [';' | ',']
+
+returnType ::= 'void' | <ID>
